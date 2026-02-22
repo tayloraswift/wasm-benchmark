@@ -58,9 +58,6 @@ extension ResourceInputs {
     @inlinable public var tradeable: ArraySlice<ResourceInput> {
         self.inputs.values.elements[self.inputsPartition...]
     }
-    @inlinable public var joined: ResourceStockpileCollection<ResourceInput> {
-        .init(elements: self.all, elementsPartition: self.inputsPartition)
-    }
 
     public var fulfilled: Double {
         self.inputs.values.reduce(1) { min($0, $1.fulfilled) }
@@ -84,22 +81,14 @@ extension ResourceInputs {
     }
 
     public mutating func consume(
-        from resourceTier: ResourceTier,
+        from resourceTier: [Quantity<Resource>],
         scalingFactor: (x: Int64, z: Double),
-        reservingDays: Int64
     ) {
-        for (id, amount): (Resource, Int64) in resourceTier.segmented {
-            self.inputs[id]!.consume(
-                amount * scalingFactor.x,
+        for value: Quantity<Resource> in resourceTier {
+            self.inputs[value.unit]!.consume(
+                value.amount * scalingFactor.x,
                 efficiency: scalingFactor.z,
                 reservedDays: 1
-            )
-        }
-        for (id, amount): (Resource, Int64) in resourceTier.tradeable {
-            self.inputs[id]!.consume(
-                amount * scalingFactor.x,
-                efficiency: scalingFactor.z,
-                reservedDays: reservingDays
             )
         }
     }

@@ -1,7 +1,6 @@
 import Identifiers
 import OrderedCollections
 
-
 @frozen public struct ResourceDictionary<Value> where Value: ResourceStockpile {
     @usableFromInline var indices: [Resource: Int]
     @usableFromInline var ordered: [Value]

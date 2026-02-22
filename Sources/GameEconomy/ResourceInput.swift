@@ -80,34 +80,12 @@ extension ResourceInput {
         self.value -= valueConsumed
         self.units -= unitsConsumed
     }
-
-    mutating func consumeAll() {
-        self.units -= self.units.total
-        self.value -= self.value.total
-    }
 }
 extension ResourceInput {
-    @inlinable public func needed(_ target: Int64) -> Int64 {
-        self.units.total < target ? target - self.units.total : 0
-    }
-
-    @inlinable public var averageCost: Double? {
-        let denominator: Int64 = self.units.total + self.unitsConsumed
-        return denominator == 0 ? nil : Double.init(
-            self.valueConsumed + self.value.total
-        ) / Double.init(denominator)
-    }
-
     var fulfilled: Double {
         let denominator: Int64 = self.unitsDemanded
         return denominator == 0 ? 1 : Double.init(
             self.unitsConsumed + self.units.total
-        ) / Double.init(denominator)
-    }
-    var fulfilledAfterReservation: Double {
-        let denominator: Int64 = self.unitsDemanded
-        return denominator == 0 ? 1 : Double.init(
-            self.unitsConsumed
         ) / Double.init(denominator)
     }
 }

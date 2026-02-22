@@ -29,15 +29,8 @@ let package: Package = .init(
         ),
 
         .target(
-            name: "Fraction",
-            dependencies: [
-            ],
-        ),
-
-        .target(
             name: "GameEconomy",
             dependencies: [
-                .target(name: "Fraction"),
                 .target(name: "Identifiers"),
                 .product(name: "OrderedCollections", package: "swift-collections"),
             ]

@@ -21,24 +21,17 @@ extension ResourceInputs {
     }
 }
 extension ResourceInputs {
-    public mutating func sync(
-        with tier: [Quantity<Resource>],
-        scalingFactor: (x: Int64, z: Double),
-    ) {
+    public mutating func sync(tier: [Quantity<Resource>], scale: (x: Int64, z: Double)) {
         self.inputs.sync(with: tier) {
-            $1.turn(unitsDemanded: $0 * scalingFactor.x, efficiency: scalingFactor.z)
+            $1.turn(unitsDemanded: $0 * scale.x, efficiency: scale.z)
         }
     }
 
-    public mutating func consume(
-        from resourceTier: [Quantity<Resource>],
-        scalingFactor: (x: Int64, z: Double),
-    ) {
-        for (i, value): (Int, Quantity<Resource>) in zip(self.inputs.values.indices, resourceTier) {
-            self.inputs.values[i].consume(
-                value.amount * scalingFactor.x,
-                efficiency: scalingFactor.z,
-                reservedDays: 1
+    public mutating func touch(tier: [Quantity<Resource>], scale: (x: Int64, z: Double)) {
+        for (i, value): (Int, Quantity<Resource>) in zip(self.inputs.values.indices, tier) {
+            self.inputs.values[i].touch(
+                value.amount * scale.x,
+                efficiency: scale.z,
             )
         }
     }

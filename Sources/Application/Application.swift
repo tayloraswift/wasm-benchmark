@@ -49,8 +49,8 @@ extension GameAPI {
             var buffer: [ResourceInputs] = (0 ..< 10000).map { _ in .empty }
             for i: Int in buffer.indices {
                 buffer[i].sync(
-                    with: resources,
-                    scalingFactor: (x: Int64.init(i), z: 0.5 / Double.init(1 + i))
+                    tier: resources,
+                    scale: (x: Int64.init(i), z: 0.05 * Double.init(1 + i))
                 )
             }
 
@@ -59,9 +59,9 @@ extension GameAPI {
             for loop: Int64 in 0... {
                 print("Tick \(loop)")
                 for i: Int in buffer.indices {
-                    buffer[i].consume(
-                        from: resources,
-                        scalingFactor: (x: Int64.init(i), z: 0.5 / Double.init(1 + i)),
+                    buffer[i].touch(
+                        tier: resources,
+                        scale: (x: Int64.init(i), z: 0.05 * Double.init(1 + i)),
                     )
                 }
             }

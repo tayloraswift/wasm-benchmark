@@ -2,25 +2,17 @@ import Identifiers
 import OrderedCollections
 
 @frozen public struct ResourceInputs {
-    @usableFromInline var tradingCooldown: Int64
     @usableFromInline var inputs: OrderedDictionary<Resource, ResourceInput>
-    /// The index of the first **tradeable** resource in ``inputs``, which may be the end
-    /// index if there are no tradeable resources.
-    @usableFromInline var inputsPartition: Int
 
     @inlinable init(
-        tradingCooldown: Int64,
         inputs: OrderedDictionary<Resource, ResourceInput>,
-        inputsPartition: Int
     ) {
-        self.tradingCooldown = tradingCooldown
         self.inputs = inputs
-        self.inputsPartition = inputsPartition
     }
 }
 extension ResourceInputs {
     @inlinable public static var empty: Self {
-        .init(tradingCooldown: 0, inputs: [:], inputsPartition: 0)
+        .init(inputs: [:])
     }
 }
 extension ResourceInputs {
@@ -33,7 +25,6 @@ extension ResourceInputs {
         with tier: [Quantity<Resource>],
         scalingFactor: (x: Int64, z: Double),
     ) {
-        self.inputsPartition = 0
         self.inputs.sync(with: tier) {
             $1.turn(unitsDemanded: $0 * scalingFactor.x, efficiency: scalingFactor.z)
         }

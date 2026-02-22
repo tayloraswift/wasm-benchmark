@@ -7,7 +7,6 @@ enum GameAPI {
 import GameEconomy
 import Identifiers
 import JavaScriptEventLoop
-import JavaScript
 import JavaScriptKit
 
 typealias DefaultExecutorFactory = JavaScriptEventLoop

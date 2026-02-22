@@ -16,14 +16,13 @@ let package: Package = .init(
     dependencies: [
         .package(url: "https://github.com/swiftwasm/JavaScriptKit", exact: "0.41.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.2.1"),
-        .package(url: "https://github.com/tayloraswift/swift-json", from: "2.3.0"),
     ],
     targets: [
         .executableTarget(
             name: "Application",
             dependencies: [
                 .target(name: "GameEconomy"),
-                .target(name: "JavaScript"),
+                .product(name: "JavaScriptKit", package: "JavaScriptKit"),
                 .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
             ],
         ),
@@ -42,33 +41,6 @@ let package: Package = .init(
             ]
         ),
 
-
-        .target(
-            name: "JavaScript",
-            dependencies: [
-                .target(name: "JavaScriptBackend"),
-            ]
-        ),
-        .target(
-            name: "JavaScriptBackend",
-            dependencies: [
-                .product(
-                    name: "JavaScriptPersistence",
-                    package: "swift-json",
-                    condition: .when(traits: ["Headless"]),
-                ),
-                .product(
-                    name: "JavaScriptBigIntSupport",
-                    package: "JavaScriptKit",
-                    condition: .when(traits: ["WebAssembly"]),
-                ),
-                .product(
-                    name: "JavaScriptKit",
-                    package: "JavaScriptKit",
-                    condition: .when(traits: ["WebAssembly"]),
-                ),
-            ]
-        ),
     ]
 )
 

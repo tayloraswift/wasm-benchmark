@@ -35,9 +35,7 @@ extension GameAPI {
             executor.terminate()
         }
 
-        print("Game engine initialized!")
-
-        print("Game engine launched!")
+        print("WebAssembly initialized!")
         let _: Task<Void, any Error> = .init(executorPreference: executor) {
             let resources: [Quantity<Resource>] = [
                 .init(amount: 10, unit: 0),

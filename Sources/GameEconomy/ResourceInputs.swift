@@ -22,51 +22,10 @@ extension ResourceInputs {
     @inlinable public static var empty: Self {
         .init(tradingCooldown: 0, inputs: [:], inputsPartition: 0)
     }
-
-    @inlinable public init(
-        segmented: [ResourceInput],
-        tradeable: [ResourceInput],
-        tradeableDaysReserve: Int64
-    ) {
-        var combined: OrderedDictionary<Resource, ResourceInput> = .init(
-            minimumCapacity: segmented.count + tradeable.count
-        )
-        for input: ResourceInput in segmented {
-            combined[input.id] = input
-        }
-        let inputsPartition: Int = combined.elements.endIndex
-        for input: ResourceInput in tradeable {
-            combined[input.id] = input
-        }
-        self.init(
-            tradingCooldown: tradeableDaysReserve,
-            inputs: combined,
-            inputsPartition: inputsPartition
-        )
-    }
 }
 extension ResourceInputs {
-    @inlinable public static var stockpileDaysFactor: Int64 { 2 }
-
-    @inlinable public var tradeableDaysReserve: Int64 { self.tradingCooldown }
-    @inlinable public var count: Int { self.inputs.count }
-    @inlinable public var all: [ResourceInput] { self.inputs.values.elements }
-
-    @inlinable public var segmented: ArraySlice<ResourceInput> {
-        self.inputs.values.elements[..<self.inputsPartition]
-    }
-    @inlinable public var tradeable: ArraySlice<ResourceInput> {
-        self.inputs.values.elements[self.inputsPartition...]
-    }
-
     public var fulfilled: Double {
         self.inputs.values.reduce(1) { min($0, $1.fulfilled) }
-    }
-}
-extension ResourceInputs {
-    @inlinable public subscript(id: Resource) -> ResourceInput? {
-        _read   { yield  self.inputs[id] }
-        _modify { yield &self.inputs[id] }
     }
 }
 extension ResourceInputs {
@@ -84,8 +43,8 @@ extension ResourceInputs {
         from resourceTier: [Quantity<Resource>],
         scalingFactor: (x: Int64, z: Double),
     ) {
-        for value: Quantity<Resource> in resourceTier {
-            self.inputs[value.unit]!.consume(
+        for (i, value): (Int, Quantity<Resource>) in zip(self.inputs.values.indices, resourceTier) {
+            self.inputs.values[i].consume(
                 value.amount * scalingFactor.x,
                 efficiency: scalingFactor.z,
                 reservedDays: 1

@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "ES2020",
+        "module": "Node16",
+        "moduleResolution": "node16",
+        "noImplicitOverride": true,
+        "noFallthroughCasesInSwitch": true
+    }
+}

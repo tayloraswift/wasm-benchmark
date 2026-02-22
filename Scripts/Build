@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+swift package \
+    --scratch-path TypeScript/.build.wasm \
+    --swift-sdk "$SWIFT_WASM_SDK" \
+    --swift-sdks-path "$SWIFT_WASM_SDK_PATH" \
+    -c release \
+    js --product application \
+    --debug-info-format name

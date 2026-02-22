@@ -1,0 +1,7 @@
+/.build
+/.build.wasm
+/TypeScript/.build
+/TypeScript/.build.wasm
+/TypeScript/node_modules
+/TypeScript/package-lock.json
+/Package.resolved

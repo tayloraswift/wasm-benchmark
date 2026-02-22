@@ -4,7 +4,7 @@ enum GameAPI {
 }
 #else
 
-import GameEconomy
+import Model
 import Identifiers
 import JavaScriptEventLoop
 import JavaScriptKit

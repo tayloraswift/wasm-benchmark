@@ -4,7 +4,7 @@ import PackageDescription
 import typealias Foundation.ProcessInfo
 
 let package: Package = .init(
-    name: "majesty",
+    name: "wasm-benchmark",
     products: [
         .executable(name: "application", targets: ["Application"]),
     ],
@@ -21,14 +21,14 @@ let package: Package = .init(
         .executableTarget(
             name: "Application",
             dependencies: [
-                .target(name: "GameEconomy"),
+                .target(name: "Model"),
                 .product(name: "JavaScriptKit", package: "JavaScriptKit"),
                 .product(name: "JavaScriptEventLoop", package: "JavaScriptKit"),
             ],
         ),
 
         .target(
-            name: "GameEconomy",
+            name: "Model",
             dependencies: [
                 .target(name: "Identifiers"),
                 .product(name: "OrderedCollections", package: "swift-collections"),

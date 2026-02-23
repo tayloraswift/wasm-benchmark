@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-    base: '/majesty/',
+    base: '/benchmark/',
     publicDir: '../Public',
     resolve: {
         alias: {
